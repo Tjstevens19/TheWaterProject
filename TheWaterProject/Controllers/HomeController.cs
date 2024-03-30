@@ -13,13 +13,14 @@ namespace TheWaterProject.Controllers
             _repo = temp;
         }
 
-        public IActionResult Index(int pageNum)
+        public IActionResult Index(int pageNum, string? projectType)
         {
-            int pageSize = 2;
+            int pageSize = 5;
 
             var blah = new ProjectsListViewModel
             {
                 Projects = _repo.Projects
+                    .Where(x => projectType == null || x.ProjectType == projectType)
                     .OrderBy(x => x.ProjectName)
                     .Skip((pageNum - 1) * pageSize)
                     .Take(pageSize),
@@ -28,8 +29,11 @@ namespace TheWaterProject.Controllers
                 {
                     CurrentPage = pageNum,
                     ItemsPerPage = pageSize,
-                    TotalItems = _repo.Projects.Count()
-                }
+                    TotalItems = projectType == null ? _repo.Projects.Count() : _repo.Projects.Where(x => x.ProjectType == projectType).Count()
+                },
+
+                CurrentProjectType = projectType
+
             };
             
 
