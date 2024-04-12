@@ -13,7 +13,7 @@ namespace TheWaterProject.Controllers
             _repo = temp;
         }
 
-        public IActionResult Index(int pageNum, string? projectType)
+        public IActionResult Index(string? projectType, int pageNum = 1)
         {
             int pageSize = 5;
 
